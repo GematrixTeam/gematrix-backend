@@ -25,8 +25,7 @@ SECRET_KEY = 'do1@9wm)7#pa-ih%sw2y+)xpa$=0j-xlb)j-0hpqf%)-k=u__l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost', 'gematrix.hntr.info', 'gematrix-dev.hntr.info']
 
 # Application definition
 

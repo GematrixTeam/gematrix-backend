@@ -1,6 +1,30 @@
 language: python
+
 python:
-  - "3.6"      # current default Python on Travis CI
+- '3.6'
 
 script: make all
 
+jobs:
+  include:
+  - stage: Build
+    script: make lint
+  - stage: Dockerize and publish
+    script: make docker_all
+  - stage: Deploy
+    script:
+      - export DOCKER_TAG=$(git rev-parse HEAD)
+      - echo $DOCKER_TAG
+      - ssh -o "StrictHostKeyChecking no" -t root@gematrix-dev.hntr.info "/snap/bin/docker service update --image=gematrix/gematrix-backend:${DOCKER_TAG} gematrix-backend"
+
+stages:
+- Build
+- Dockerize and publish
+- Deploy
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_759304511e8d_key -iv $encrypted_759304511e8d_iv
+  -in deploy_key.enc -out ./deploy_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 ./deploy_key
+- ssh-add ./deploy_key

@@ -221,3 +221,9 @@ $RECYCLE.BIN/
 
 #Vim
 *.swp
+
+#Docker volumes
+docker_volumes
+
+#Deployment
+deploy_key

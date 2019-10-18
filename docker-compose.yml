@@ -1,0 +1,28 @@
+version: "3"
+services:
+  gematrix-backend:
+    container_name: gematrix-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gematrix/gematrix-backend:0.0.0-alpha
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./gematrix/:/service
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    environment:
+      - DATABASE_URL=mysql://root:itsasecret@db:3306/gematrix_db
+
+  db:
+    container_name: mysql_database
+    image: mysql/mysql-server
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=itsasecret
+    volumes:
+      - ./docker_volumes/mysql:/var/lib/mysql
