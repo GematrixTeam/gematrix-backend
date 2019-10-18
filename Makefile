@@ -2,6 +2,9 @@
 
 VIRTUALENV = virtualenv
 VENV = .venv
+LINT = flake8 --ignore E501,F401
+
+all: lint test
 
 venv: $(VENV)/bin/activate
 	@echo "Virtualenv is configured"
@@ -14,6 +17,10 @@ $(VENV)/bin/activate: requirements.txt
 
 test: venv
 	. $(VENV)/bin/activate; ./gematrix/manage.py test
+
+lint: venv
+	. $(VENV)/bin/activate; $(LINT) gematrix
+
 
 clean:
 	git clean -dfx -e .idea/
