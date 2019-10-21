@@ -2,5 +2,5 @@ language: python
 python:
   - "3.6"      # current default Python on Travis CI
 
-script: make test
+script: make all
 
