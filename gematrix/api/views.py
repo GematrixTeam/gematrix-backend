@@ -7,8 +7,6 @@ from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
 
 
-
-
 # Create your views here.
 
 @api_view(['GET', 'POST'])

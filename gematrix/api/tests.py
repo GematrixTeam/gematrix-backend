@@ -20,10 +20,9 @@ datasample = {
 
 jsonsample = json.dumps(datasample)
 
-
-
 # initialize the APIClient app
 client = Client()
+
 
 class GetTest(TestCase):
     """ Test module """
@@ -43,6 +42,3 @@ class GetTest(TestCase):
 
         self.assertEqual(response_get.status_code, status.HTTP_200_OK)
         self.assertEqual(data, datasample)
-
-
-
