@@ -10,6 +10,7 @@ jobs:
   - stage: Build
     script: make lint
   - stage: Dockerize and publish
+    if: branch = master
     script: make docker_all
   - stage: Deploy
     if: branch = master
