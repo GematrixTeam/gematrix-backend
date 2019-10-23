@@ -22,7 +22,7 @@ $(VENV)/bin/activate: requirements.txt
 	touch $(VENV)/bin/activate
 
 test: venv
-	. $(VENV)/bin/activate; ./gematrix/manage.py test
+	. $(VENV)/bin/activate; ./gematrix/manage.py test ./gematrix/api
 
 lint: venv
 	. $(VENV)/bin/activate; $(LINT) gematrix
