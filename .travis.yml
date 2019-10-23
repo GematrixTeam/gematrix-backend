@@ -10,10 +10,10 @@ jobs:
   - stage: Build
     script: make lint
   - stage: Dockerize and publish
-    if: branch = master
+    if: branch = master AND type = push AND fork = false
     script: make docker_all
   - stage: Deploy
-    if: branch = master
+    if: branch = master AND type = push AND fork = false
     script:
       - export DOCKER_TAG=$(git rev-parse HEAD)
       - echo $DOCKER_TAG
