@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: gematrix/gematrix-backend:0.0.0-alpha
+    image: gematrix/gematrix-backend
     stdin_open: true
     tty: true
     volumes:
