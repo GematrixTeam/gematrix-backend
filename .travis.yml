@@ -17,7 +17,7 @@ jobs:
     script:
       - export DOCKER_TAG=$(git rev-parse HEAD)
       - echo $DOCKER_TAG
-      - ssh -o "StrictHostKeyChecking no" -t root@gematrix-dev.hntr.info "/snap/bin/docker service update --image=gematrix/gematrix-backend:${DOCKER_TAG} gematrix-backend"
+      - ssh -o "StrictHostKeyChecking no" -t ${CD_HOST} "~/gematrix-ops/update_backend.sh ${DOCKER_TAG}"
 
 stages:
 - Build
