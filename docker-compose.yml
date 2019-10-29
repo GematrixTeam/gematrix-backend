@@ -15,14 +15,16 @@ services:
     links:
       - db
     environment:
-      - DATABASE_URL=mysql://root:itsasecret@db:3306/gematrix_db
+      - DATABASE_URL=postgresql://gematrix:topsecret@db:54320/gematrix_db
 
   db:
-    container_name: mysql_database
-    image: mysql/mysql-server
-    ports:
-      - "3306:3306"
+    image: postgres:12-alpine
+    container_name: gematrix-psql
     environment:
-      - MYSQL_ROOT_PASSWORD=itsasecret
+      - POSTGRES_USER=gematrix
+      - POSTGRES_PASSWORD=topsecret
+      - POSTGRES_DB=gematrix_db
+    ports:
+      - "54320:5432"
     volumes:
-      - ./docker_volumes/mysql:/var/lib/mysql
+      - ./docker_volumes/postgresql/data:/var/lib/postgresql/data
