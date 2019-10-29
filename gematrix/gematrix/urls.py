@@ -15,18 +15,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, re_path, include
-from rest_framework import routers
-from api.views import get_post_json, get_users_feed, get_data_by_id
+from django.urls import path, include
 
 # Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
 
 urlpatterns = [
-    re_path(r'', include(router.urls)),
-    re_path(r'admin/', admin.site.urls),
-    re_path(r'^api/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'^api/upload-data', get_post_json, name='get_post_json'),
-    re_path(r'^api/users/feed', get_users_feed, name='get_users_feed'),
-    path('api/v1/datasets/<slug:slug>', get_data_by_id)
+    path('admin/', admin.site.urls),
+    path('api/v1/', include('api.urls'))
 ]

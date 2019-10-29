@@ -1,42 +1,16 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+
+from api.get_data_sample import feed_datasample, datasample
 
 # Create your views here.
-
-feed_datasample = {
-    "feed": [
-        {"id": "testb09199c62bcf9418ad846dd0e4bbdfc6ee4b",
-         "timestamp": "2019-10-23T18:00:43.511Z",
-         "title": "Some extremely valuable data",
-         "datePeriodFrom": "2017-10-23T18:00:43.511Z",
-         "datePeriodTo": "2018-10-23T18:00:43.511Z",
-         "dataPointsCount": 1024,
-         "source": {"name": "Eurostat",
-                    "url": "https://ec.europa.eu/eurostat/estat-navtree-portlet-prod"}
-         }
-    ]
-}
-
-datasample = {
-    "name": "Some very important data",
-    "createdDate": "2017-01-23T18:00:43.511Z",
-    "updatedDate": "2017-01-23T18:00:43.511Z",
-    "dataPoints": [
-        {"x": "2015-01-01T18:00:43.511Z", "y": 22},
-        {"x": "2016-01-23T18:00:43.511Z", "y": 23},
-        {"x": "2017-01-23T18:00:43.511Z", "y": 290}
-    ],
-    "source": {
-        "name": "Eurostat",
-        "url": "https://ec.europa.eu/eurostat/estat-navtree-portlet-prod"
-    }
-
-}
+from api.models import DataPoint, Dataset
+from api.serializers import DataPointSerializer, DatasetSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -61,3 +35,37 @@ def get_users_feed(request):
 def get_data_by_id(requset, slug):
     # curl -X GET http://localhost:8000/api/v1/datasets/{dataset_id}
     return JsonResponse(datasample)
+
+
+class DataPointView(viewsets.ViewSet):
+    """
+    A DataPointView
+    """
+
+    def list(self, request):
+        queryset = DataPoint.objects.all()
+        serializer = DataPointSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = DataPoint.objects.all()
+        point = get_object_or_404(queryset, pk=pk)
+        serializer = DataPointSerializer(point)
+        return Response(serializer.data)
+
+
+class DatasetView(viewsets.ViewSet):
+    """
+    A DatasetView
+    """
+
+    def list(self, request):
+        queryset = Dataset.objects.all()
+        serializer = DatasetSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Dataset.objects.all()
+        point = get_object_or_404(queryset, pk=pk)
+        serializer = DatasetSerializer(point)
+        return Response(serializer.data)
