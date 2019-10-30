@@ -16,6 +16,6 @@ app_name = "api"
 urlpatterns = [
     path('', include(router.urls)),
     path('datasets/<slug:slug>/', get_data_by_id, name=""),
-    path('upload-data/', get_post_json, name='get_post_json'),
+    path('datasets/', get_post_json, name='get_post_json'),
     path('users/feed/', get_users_feed, name='get_users_feed'),
 ]
