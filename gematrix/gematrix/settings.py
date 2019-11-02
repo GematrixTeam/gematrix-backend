@@ -25,7 +25,7 @@ SECRET_KEY = 'do1@9wm)7#pa-ih%sw2y+)xpa$=0j-xlb)j-0hpqf%)-k=u__l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'gematrix.hntr.info', 'gematrix-dev.hntr.info']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'gematrix.hntr.info', 'gematrix-dev.hntr.info']
 
 # Application definition
 
@@ -38,17 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'api'
+    'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'gematrix.urls'
@@ -128,3 +131,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Warning: In production replace it on:
+#
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ORIGIN_WHITELIST = [
+#    "https://example.com",
+#    "https://sub.example.com",
+#    "http://localhost:8080",
+#    "http://127.0.0.1:9000"]
+#
+# For more info: https://github.com/adamchainz/django-cors-headers#configuration
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
