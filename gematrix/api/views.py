@@ -10,7 +10,8 @@ from api.get_data_sample import feed_datasample, datasample
 
 # Create your views here.
 from api.models import DataPoint, Dataset
-from api.serializers import DataPointSerializer, DatasetSerializer
+from api.serializers import DataPointSerializer,\
+    DatasetSerializer, FeedEventsSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -68,4 +69,12 @@ class DatasetView(viewsets.ViewSet):
         queryset = Dataset.objects.all()
         point = get_object_or_404(queryset, pk=pk)
         serializer = DatasetSerializer(point)
+        return Response(serializer.data)
+
+
+class FeedEventsView(viewsets.ViewSet):
+
+    def list(self, request, n=10):
+        queryset = reversed(Dataset.objects.order_by('updated')[:n])
+        serializer = FeedEventsSerializer(queryset, many=True)
         return Response(serializer.data)

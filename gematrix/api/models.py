@@ -1,6 +1,4 @@
 # Date: 25.10.2019 23:00
-# Author: MaximRaduntsev
-
 
 import uuid
 from django.contrib.auth.models import User
@@ -11,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Core(models.Model):
+
     """ Базовый класс """
 
     class Meta:
