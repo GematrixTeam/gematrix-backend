@@ -10,7 +10,7 @@ DOCKER_IMG    := ${DOCKER_NAME}:${DOCKER_TAG}
 DOCKER_LATEST := ${DOCKER_NAME}:latest
 
 
-all: lint test
+all: lint check_migrations test
 
 venv: $(VENV)/bin/activate
 	@echo "Virtualenv is configured"
@@ -26,6 +26,9 @@ test: venv
 
 lint: venv
 	. $(VENV)/bin/activate; $(LINT) gematrix
+
+check_migrations: venv
+	. $(VENV)/bin/activate; ./gematrix/manage.py makemigrations api --check --dry-run
 
 clean:
 	git clean -dfx -e .idea/
