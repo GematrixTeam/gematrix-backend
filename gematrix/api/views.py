@@ -9,9 +9,10 @@ from rest_framework import viewsets
 from api.get_data_sample import feed_datasample, datasample
 
 # Create your views here.
-from api.models import DataPoint, Dataset
-from api.serializers import DataPointSerializer,\
-    DatasetSerializer, FeedEventsSerializer
+from api.models import GematrixData, GematrixDatasets
+from api.serializers import GematrixDataSerializer, \
+    GematrixDatasetsSerializer, LastNEventsSerializer, \
+    GematrixDatasetsInlineSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -38,43 +39,29 @@ def get_data_by_id(requset, slug):
     return JsonResponse(datasample)
 
 
-class DataPointView(viewsets.ViewSet):
-    """
-    A DataPointView
-    """
+class GematrixDatasetsView(viewsets.ViewSet):
 
     def list(self, request):
-        queryset = DataPoint.objects.all()
-        serializer = DataPointSerializer(queryset, many=True)
+        queryset = GematrixDatasets.objects.all()
+        serializer = GematrixDatasetsSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = DataPoint.objects.all()
+        queryset = GematrixDatasets.objects.all()
         point = get_object_or_404(queryset, pk=pk)
-        serializer = DataPointSerializer(point)
+        serializer = GematrixDatasetsSerializer(point)
         return Response(serializer.data)
 
 
-class DatasetView(viewsets.ViewSet):
-    """
-    A DatasetView
-    """
-
-    def list(self, request):
-        queryset = Dataset.objects.all()
-        serializer = DatasetSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = Dataset.objects.all()
-        point = get_object_or_404(queryset, pk=pk)
-        serializer = DatasetSerializer(point)
-        return Response(serializer.data)
+class GematrixDatasetsViewSet(viewsets.ModelViewSet):
+    serializer_class = GematrixDatasetsInlineSerializer
+    queryset = GematrixDatasets.objects.all()
 
 
-class FeedEventsView(viewsets.ViewSet):
+class LastNEventsView(viewsets.ViewSet):
 
     def list(self, request, n=10):
-        queryset = reversed(Dataset.objects.order_by('updated')[:n])
-        serializer = FeedEventsSerializer(queryset, many=True)
+        # curl -X GET http://localhost:8000/api/v1/feed/
+        queryset = reversed(GematrixDatasets.objects.order_by('time_updated')[:n])
+        serializer = LastNEventsSerializer(queryset, many=True)
         return Response(serializer.data)
