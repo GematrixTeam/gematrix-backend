@@ -6,11 +6,11 @@ from rest_framework import routers
 
 from api.views import GematrixDatasetsView, \
     get_data_by_id, get_post_json, get_users_feed, \
-    LastNEventsView, GematrixDatasetsViewSet
+    FeedEventsView, GematrixDatasetsViewSet
 
 router = routers.DefaultRouter()
 router.register(r'getdatasets', GematrixDatasetsView, 'Datasets')
-router.register(r'feed', LastNEventsView, 'LastNEvents')
+router.register(r'feed', FeedEventsView, 'FeedEvents')
 router.register(r'postdataset', GematrixDatasetsViewSet, 'Dataset')
 
 app_name = "api"

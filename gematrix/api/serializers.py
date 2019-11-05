@@ -73,7 +73,7 @@ class GematrixDatasetsInlineSerializer(serializers.ModelSerializer):
         return dataset
 
 
-class LastNEventsSerializer(GematrixDatasetsSerializer):
+class FeedEventsSerializer(GematrixDatasetsSerializer):
     datePeriodFrom = serializers.SerializerMethodField('get_period_from')
     datePeriodTo = serializers.SerializerMethodField('get_period_to')
     dataPointsCount = serializers.SerializerMethodField('get_datapoints_count')

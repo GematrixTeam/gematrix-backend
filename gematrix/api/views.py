@@ -11,7 +11,7 @@ from api.get_data_sample import feed_datasample, datasample
 # Create your views here.
 from api.models import GematrixData, GematrixDatasets
 from api.serializers import GematrixDataSerializer, \
-    GematrixDatasetsSerializer, LastNEventsSerializer, \
+    GematrixDatasetsSerializer, FeedEventsSerializer, \
     GematrixDatasetsInlineSerializer
 
 
@@ -58,10 +58,10 @@ class GematrixDatasetsViewSet(viewsets.ModelViewSet):
     queryset = GematrixDatasets.objects.all()
 
 
-class LastNEventsView(viewsets.ViewSet):
+class FeedEventsView(viewsets.ViewSet):
 
     def list(self, request, n=10):
         # curl -X GET http://localhost:8000/api/v1/feed/
         queryset = reversed(GematrixDatasets.objects.order_by('time_updated')[:n])
-        serializer = LastNEventsSerializer(queryset, many=True)
+        serializer = FeedEventsSerializer(queryset, many=True)
         return Response(serializer.data)
