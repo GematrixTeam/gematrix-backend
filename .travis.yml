@@ -8,7 +8,7 @@ script: make all
 jobs:
   include:
   - stage: Build
-    script: make lint
+    script: make lint && make check_migrations
   - stage: Dockerize and publish
     if: branch = master AND type = push AND fork = false
     script: make docker_all
