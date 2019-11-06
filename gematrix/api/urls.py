@@ -9,7 +9,7 @@ from api.views import get_data_by_id, get_post_json, get_users_feed, \
 
 router = routers.DefaultRouter()
 router.register(r'feed', FeedEventsView, 'LastNEvents')
-router.register(r'dataset', GematrixDatasetsViewSet, 'Dataset')
+router.register(r'datasets', GematrixDatasetsViewSet, 'Dataset')
 
 app_name = "api"
 
