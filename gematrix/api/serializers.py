@@ -1,7 +1,7 @@
 # Date: 22.10.2019 15:57
 
 from rest_framework import serializers
-from api.models import GematrixData, GematrixSource, GematrixDatasets, Core
+from api.models import GematrixData, GematrixSource, GematrixDatasets, GematrixTags
 
 
 class GematrixSourceSerializer(serializers.ModelSerializer):
@@ -22,29 +22,16 @@ class GematrixDataSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'dataset',)
 
 
-class GematrixDatasetsSerializer(serializers.ModelSerializer):
-    source = GematrixSourceSerializer()
-    data_point = serializers.SerializerMethodField('get_data_point')
-
+class GematrixTagsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GematrixDatasets
-        fields = [
-            # 'id',
-            'name',
-            'time_created',
-            'time_updated',
-            'data_point',
-            'source'
-        ]
-
-    def get_data_point(self, obj):
-        serializer = GematrixDataSerializer(GematrixData.objects.all(), many=True)
-        return serializer.data
+        model = GematrixTags
+        fields = ['name']
 
 
-class GematrixDatasetsInlineSerializer(serializers.ModelSerializer):
+class GematrixDatasetSerializer(serializers.ModelSerializer):
     source = GematrixSourceSerializer(read_only=False)
     data_point = GematrixDataSerializer(read_only=False, many=True)
+    gematrix_tags = GematrixTagsSerializer(read_only=False, many=True)
 
     class Meta:
         model = GematrixDatasets
@@ -55,12 +42,15 @@ class GematrixDatasetsInlineSerializer(serializers.ModelSerializer):
             'time_updated',
             'data_point',
             'source',
+            "gematrix_tags",
         ]
         read_only_fields = ('id', 'time_created', 'time_updated',)
 
     def create(self, validated_data):
         data_point = validated_data.pop('data_point')
         source_data = validated_data.pop('source')
+        tags_data = validated_data.pop('gematrix_tags')
+
         if source_data:
             source = GematrixSource.objects.get_or_create(**source_data)[0]
             validated_data['source'] = source
@@ -69,14 +59,17 @@ class GematrixDatasetsInlineSerializer(serializers.ModelSerializer):
 
         for data in data_point:
             GematrixData.objects.create(**data, dataset=dataset)
+        for tag_data in tags_data:
+            dataset.gematrix_tags.create(**tag_data)
 
         return dataset
 
 
-class FeedEventsSerializer(GematrixDatasetsSerializer):
+class FeedEventsSerializer(serializers.ModelSerializer):
     datePeriodFrom = serializers.SerializerMethodField('get_period_from')
     datePeriodTo = serializers.SerializerMethodField('get_period_to')
     dataPointsCount = serializers.SerializerMethodField('get_datapoints_count')
+    source = GematrixSourceSerializer()
 
     class Meta:
         model = GematrixDatasets

@@ -9,10 +9,9 @@ from rest_framework import viewsets
 from api.get_data_sample import feed_datasample, datasample
 
 # Create your views here.
-from api.models import GematrixData, GematrixDatasets
-from api.serializers import GematrixDataSerializer, \
-    GematrixDatasetsSerializer, FeedEventsSerializer, \
-    GematrixDatasetsInlineSerializer
+
+from api.models import GematrixDatasets
+from api.serializers import FeedEventsSerializer, GematrixDatasetSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -39,22 +38,8 @@ def get_data_by_id(requset, slug):
     return JsonResponse(datasample)
 
 
-class GematrixDatasetsView(viewsets.ViewSet):
-
-    def list(self, request):
-        queryset = GematrixDatasets.objects.all()
-        serializer = GematrixDatasetsSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = GematrixDatasets.objects.all()
-        point = get_object_or_404(queryset, pk=pk)
-        serializer = GematrixDatasetsSerializer(point)
-        return Response(serializer.data)
-
-
 class GematrixDatasetsViewSet(viewsets.ModelViewSet):
-    serializer_class = GematrixDatasetsInlineSerializer
+    serializer_class = GematrixDatasetSerializer
     queryset = GematrixDatasets.objects.all()
 
 

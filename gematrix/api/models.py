@@ -60,6 +60,13 @@ class GematrixSource(Core):
         return ' '.join(attr_list)
 
 
+class GematrixTags(Core):
+    tags_name = models.CharField(_('Tag'), max_length=128, blank=True)
+
+    class Meta:
+        ordering = []
+
+
 class GematrixDatasets(Core):
     class Meta:
         verbose_name = _('Датасет')
@@ -67,6 +74,7 @@ class GematrixDatasets(Core):
 
     source = models.ForeignKey(GematrixSource, verbose_name=_('Источник данных'), null=True, blank=True,
                                on_delete=models.CASCADE)
+    gematrix_tags = models.ManyToManyField(GematrixTags)
 
     @property
     def data_point(self):
