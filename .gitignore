@@ -168,6 +168,12 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Mac settings
+.DS_Store
+
+# IntelliJ settings
+.idea
+
 # Editor-based Rest Client
 .idea/httpRequests
 
