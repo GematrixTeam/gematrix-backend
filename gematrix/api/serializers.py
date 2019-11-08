@@ -16,8 +16,8 @@ class GematrixDataSerializer(serializers.ModelSerializer):
         fields = [
             # 'id',
             # 'dataset',
-            'x_data',
-            'y_value',
+            'timestamp',
+            'value',
         ]
         read_only_fields = ('id', 'dataset',)
 
@@ -78,11 +78,11 @@ class FeedEventsSerializer(serializers.ModelSerializer):
         read_only_fields = ['time_created']
 
     def get_period_from(self, obj):
-        s = GematrixData.objects.distinct().order_by('x_data').values('x_data')[0]
+        s = GematrixData.objects.distinct().order_by('timestamp').values('timestamp')[0]
         return s
 
     def get_period_to(self, obj):
-        s = GematrixData.objects.distinct().order_by('x_data').values('x_data').reverse()[0]
+        s = GematrixData.objects.distinct().order_by('timestamp').values('timestamp').reverse()[0]
         return s
 
     def get_datapoints_count(self, obj):

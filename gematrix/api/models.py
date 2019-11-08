@@ -95,8 +95,8 @@ class GematrixData(Core):
         verbose_name = _('Элемент ряда')
         verbose_name_plural = _('Элементы ряда')
 
-    x_data = models.DateField(_('Период времени'), null=True, blank=True)
-    y_value = models.SmallIntegerField(_('Уровень ряда'), null=True, blank=True)
+    timestamp = models.DateField(_('Период времени'), null=True, blank=True)
+    value = models.SmallIntegerField(_('Уровень ряда'), null=True, blank=True)
 
     dataset = models.ForeignKey(GematrixDatasets, verbose_name=_('Датасет'), on_delete=models.CASCADE)
     objects = GematrixDataManager()
@@ -106,4 +106,4 @@ class GematrixData(Core):
         return cls.objects.get_count()
 
     def __str__(self):
-        return f"{self.y_value}-{self.x_data}"
+        return f"{self.timestamp}-{self.value}"
