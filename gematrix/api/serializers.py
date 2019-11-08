@@ -31,7 +31,7 @@ class GematrixTagsSerializer(serializers.ModelSerializer):
 class GematrixDatasetSerializer(serializers.ModelSerializer):
     source = GematrixSourceSerializer(read_only=False)
     data_point = GematrixDataSerializer(read_only=False, many=True)
-    gematrix_tags = GematrixTagsSerializer(read_only=False, many=True)
+    gematrix_tags = GematrixTagsSerializer(read_only=False, many=True, required=False)
 
     class Meta:
         model = GematrixDatasets
